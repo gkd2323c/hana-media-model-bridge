@@ -18,17 +18,13 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 
 ## 安装
 
-需要 HanaAgent 1.1.x 或更高版本，系统上有 `curl`。
+需要 HanaAgent 1.1.x 或更高版本，系统上有 `curl`。仓库里已经有打好包的安装件，不需要自己构建。
 
-App 走 Hana 自己的打包与安装入口：
-
-1. 用官方打包器打出安装包：`node <hana-app-creator>/scripts/pack_app.mjs --dir ./app --publisher <你的名字> --out ./dist`。`hana-app-creator` 是 Hana 自带的 App 开发 skill，位于 `~/.hanako/skills/`。
-2. 在 Hana 的「设置 → 已安装」里安装 `dist/` 下产出的 zip，按提示批准。
-3. 供应商身份是一个 provider 插件。Hana 没有为 provider 插件提供安装入口，需要把 `provider-plugins/model-bridge/` 整个目录放到 `~/.hanako/provider-plugins/model-bridge/`。
+1. 从 [Releases](https://github.com/gkd2323c/hana-media-model-bridge/releases) 下载 `app-media-model-bridge-0.3.0.zip`。
+2. 在 Hana 的「设置 → 已安装」里安装这个 zip，按提示批准。
+3. 供应商身份是一个 provider 插件。Hana 没有为 provider 插件提供安装入口，需要把本仓库的 `provider-plugins/model-bridge/` 整个目录放到 `~/.hanako/provider-plugins/model-bridge/`。
 4. 在「设置 → 应用 → 应用能力」打开三项能力：`app/media.provide`、`app/process.spawn`、`app/provider.models.manage`。
 5. 重新加载 App（`app/process.spawn` 在下次启动时生效）。
-
-如果你就在开发机上，也可以跳过打包，直接把 `app/` 放进 `<HANA_HOME>/apps/media-model-bridge`，它在市场的「已安装 → App → 待批准」区块里等你同意——这是宿主自己的装载流程，不是另一套安装器。
 
 ## 使用
 
@@ -60,19 +56,25 @@ App 走 Hana 自己的打包与安装入口：
 
 ```
 media-model-bridge/
-├─ app/                              # App 包，复制到 <HANA_HOME>/apps/media-model-bridge
+├─ media-model-bridge/               # App 源码（目录名必须等于 App id）
 │  ├─ manifest.json
 │  ├─ index.js                       # 适配器、catalog 同步、配置路由
 │  ├─ ui/                            # 设置页（设置 Tab 与卡片共用同一份）
 │  ├─ assets/
 │  └─ sdk/                           # 脚手架提供的宿主 SDK 契约，随包分发
 ├─ provider-plugins/model-bridge/    # 供应商身份，放到 <HANA_HOME>/provider-plugins/
-└─ README.md
+└─ dist/                             # 本地打包产物（不入库，发布时传到 Releases）
 ```
 
 ## 开发
 
-改完 `app/` 里的代码后，在 App 详情页点「重新加载」即可，不需要重装。改了 `manifest.json` 的 `capabilities` 会要求重新确认一次。
+源码在 `media-model-bridge/`（目录名必须与 App id 一致，打包器会校验）。改完代码重新打包：
+
+```
+node <hana-app-creator>/scripts/pack_app.mjs --dir ./media-model-bridge --publisher <你的名字> --out ./dist
+```
+
+`hana-app-creator` 是 Hana 自带的 App 开发 skill，位于 `~/.hanako/skills/hana-app-creator`。在已安装的 App 上改代码时，也可以在 App 详情页点「重新加载」，不需要重装；改了 `manifest.json` 的 `capabilities` 会要求重新确认一次。
 
 App 的配置（含 API Key）保存在 `<HANA_HOME>/app-data/media-model-bridge/config.json`，不随仓库分发。
 

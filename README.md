@@ -22,7 +22,26 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 
 1. 从 [Releases](https://github.com/gkd2323c/hana-media-model-bridge/releases) 下载 `app-media-model-bridge-0.3.0.zip`。
 2. 在 Hana 的「设置 → 已安装」里安装这个 zip，按提示批准。
-3. 供应商身份是一个 provider 插件。Hana 没有为 provider 插件提供安装入口，需要把本仓库的 `provider-plugins/model-bridge/` 整个目录放到 `~/.hanako/provider-plugins/model-bridge/`。
+3. 供应商身份是一个 provider 插件。Hana 没有为 provider 插件提供安装入口，只能手工放到 `~/.hanako/provider-plugins/model-bridge/`。在仓库根目录执行：
+
+    PowerShell（Windows）：
+
+    ```powershell
+    $dest = "$env:USERPROFILE\.hanako\provider-plugins"
+    New-Item -ItemType Directory -Force -Path $dest | Out-Null
+    Copy-Item -Recurse -Force .\provider-plugins\model-bridge $dest
+    ```
+
+    两行不能省成一句 `Copy-Item ... "$env:USERPROFILE\.hanako\provider-plugins\"`：目标目录不存在时，PowerShell 会把 `model-bridge/` 里的内容直接摊到 `provider-plugins/` 根下，宿主就不认这个插件了。
+
+    bash（macOS / Linux）：
+
+    ```bash
+    mkdir -p ~/.hanako/provider-plugins
+    cp -R provider-plugins/model-bridge ~/.hanako/provider-plugins/
+    ```
+
+    只从 Releases 拿了 zip、没有克隆仓库的话，去仓库页面取 `provider-plugins/model-bridge/manifest.json` 与 `provider-plugins/model-bridge/providers/model-bridge.json` 两个文件，按这个层级放进去。落地后应当正好是 `manifest.json`（108 字节）与 `providers/model-bridge.json`（357 字节）；把目录里的内容摊到 `provider-plugins/` 根下，宿主不认这个插件。
 4. 在「设置 → 应用 → 应用能力」打开三项能力：`app/media.provide`、`app/process.spawn`、`app/provider.models.manage`。
 5. 重新加载 App（`app/process.spawn` 在下次启动时生效）。
 

@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "media-model-bridge",
   "name": "多媒体模型桥",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "把任意 OpenAI 兼容的图片与视频生成服务接进多媒体设置，模型清单由你自己维护。",
   "entry": "index.js",
   "minAppVersion": "0.978.0",

@@ -20,7 +20,7 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 
 需要 HanaAgent 1.1.x 或更高版本，系统上有 `curl`。仓库里已经有打好包的安装件，不需要自己构建。
 
-1. 从 [Releases](https://github.com/gkd2323c/hana-media-model-bridge/releases) 下载 `app-media-model-bridge-0.3.0.zip`。
+1. 从 [Releases](https://github.com/gkd2323c/hana-media-model-bridge/releases) 下载 `app-media-model-bridge-0.3.1.zip`。
 2. 在 Hana 的「设置 → 已安装」里安装这个 zip，按提示批准。
 3. 供应商身份是一个 provider 插件。Hana 没有为 provider 插件提供安装入口，只能手工放到 `~/.hanako/provider-plugins/model-bridge/`。在仓库根目录执行：
 
@@ -41,7 +41,28 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
     cp -R provider-plugins/model-bridge ~/.hanako/provider-plugins/
     ```
 
-    只从 Releases 拿了 zip、没有克隆仓库的话，去仓库页面取 `provider-plugins/model-bridge/manifest.json` 与 `provider-plugins/model-bridge/providers/model-bridge.json` 两个文件，按这个层级放进去。落地后应当正好是 `manifest.json`（108 字节）与 `providers/model-bridge.json`（357 字节）；把目录里的内容摊到 `provider-plugins/` 根下，宿主不认这个插件。
+    只从 Releases 拿了 zip、没有克隆仓库的话，下载同一个 Release 里的 `provider-plugins-0.3.1.zip`，解压后按同样层级放进 `~/.hanako/provider-plugins/`：
+
+    PowerShell（Windows）：
+
+    ```powershell
+    $zip   = "$env:USERPROFILE\Downloads\provider-plugins-0.3.1.zip"
+    $stage = Join-Path $env:TEMP "pp-unzip"
+    $dest  = "$env:USERPROFILE\.hanako\provider-plugins"
+    Expand-Archive -Force $zip $stage
+    New-Item -ItemType Directory -Force -Path $dest | Out-Null
+    Copy-Item -Recurse -Force (Join-Path $stage "model-bridge") $dest
+    ```
+
+    bash（macOS / Linux）：
+
+    ```bash
+    unzip -o ~/Downloads/provider-plugins-0.3.1.zip -d /tmp/pp-unzip
+    mkdir -p ~/.hanako/provider-plugins
+    cp -R /tmp/pp-unzip/model-bridge ~/.hanako/provider-plugins/
+    ```
+
+    落地后应当正好是 `manifest.json`（108 字节）与 `providers/model-bridge.json`（357 字节）；把目录里的内容摊到 `provider-plugins/` 根下，宿主不认这个插件。
 4. 在「设置 → 应用 → 应用能力」打开三项能力：`app/media.provide`、`app/process.spawn`、`app/provider.models.manage`。
 5. 重新加载 App（`app/process.spawn` 在下次启动时生效）。
 
@@ -65,7 +86,7 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 ## 支持范围
 
 - 图片：`POST {BaseURL}/images/generations`，按 `data[].b64_json` 或 `data[].url` 解析。
-- 视频：`POST {BaseURL}/videos` 提交，再按服务商的查询接口轮询（默认使用档位式模型常见的 `/agnesapi?video_id={id}&model_name={model}` 形式），`status=completed` 后从 `url` 下载。查询路径可在高级参数里用 `queryPath` 覆盖，模板支持 `{id}` 与 `{model}`。
+- 视频：`POST {BaseURL}/videos` 提交，再按服务商的查询接口轮询（默认 OpenAI 风格的 `/videos/{id}`，`agnes-` 开头的模型沿用 `/agnesapi?video_id={id}&model_name={model}`），`status=completed` 后从 `url` 下载。查询路径可在高级参数里用 `queryPath` 覆盖，模板支持 `{id}` 与 `{model}`。
 - 目前视频只做文生视频（`mode: "text"`），首尾帧与图片参考尚未实现。
 
 实测覆盖图片三种尺寸档与 720P 视频，均能正常出图与出片。

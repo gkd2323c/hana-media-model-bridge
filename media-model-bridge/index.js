@@ -40,9 +40,9 @@ function normalizeExtra(raw) {
   return {};
 }
 
-function guessSize(id) {
-  if (/^agnes-video/i.test(id)) return "720P";
-  return /^agnes-image/i.test(id) ? "1K" : "1024x1024";
+function guessSize(id, type) {
+  if ((type || guessType(id)) === "video") return "720P";
+  return /^agnes-image/i.test(id || "") ? "1K" : "1024x1024";
 }
 
 function guessType(id) {
@@ -61,8 +61,8 @@ function normalizeModel(raw) {
     (typeof raw.defaultSize === "string" && raw.defaultSize.trim()) ||
     sizes[0] ||
     "";
-  const resolvedSize = explicitSize || guessSize(id);
   const type = raw.type === "video" || raw.type === "image" ? raw.type : guessType(id);
+  const resolvedSize = explicitSize || guessSize(id, type);
   const entry = {
     id,
     name: typeof raw.name === "string" && raw.name.trim() ? raw.name.trim() : id,
@@ -314,7 +314,11 @@ async function submitVideo({ provider, model, params, dataDir, taskId, curlPath 
 
 async function queryVideo({ provider, model, videoId, dataDir, generatedDir, taskId, curlPath }) {
   const origin = new URL(provider.baseUrl).origin;
-  const template = typeof model.extra?.queryPath === "string" ? model.extra.queryPath : "/agnesapi?video_id={id}&model_name={model}";
+  const legacyAgnesPath = /^agnes-/i.test(model.id) ? "/agnesapi?video_id={id}&model_name={model}" : "";
+  const template =
+    (typeof model.extra?.queryPath === "string" && model.extra.queryPath.trim()) ||
+    legacyAgnesPath ||
+    "/videos/{id}";
   const pathAndQuery = template
     .replace("{id}", encodeURIComponent(videoId))
     .replace("{model}", encodeURIComponent(model.id));

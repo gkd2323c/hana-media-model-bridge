@@ -1,0 +1,11 @@
+# app-data 与运行产物不进仓库
+config.json
+jobs/
+generated/
+tmp/
+synced-models.json
+node_modules/
+dist/
+*.log
+.DS_Store
+Thumbs.db

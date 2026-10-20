@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Multimedia model bridge">
+  <rect width="512" height="512" rx="108" fill="#0f1a2b"/>
+  <path d="M96 328c0-88 71-160 160-160s160 72 160 160" fill="none" stroke="#4fdcb8" stroke-width="22" stroke-linecap="round"/>
+  <line x1="96" y1="328" x2="416" y2="328" stroke="#2b4a6b" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="112" cy="344" r="22" fill="#4fdcb8"/>
+  <circle cx="400" cy="344" r="22" fill="#4fdcb8"/>
+  <circle cx="256" cy="168" r="26" fill="#f2c66d"/>
+</svg>

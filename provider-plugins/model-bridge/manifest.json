@@ -1,0 +1,6 @@
+{
+  "id": "model-bridge",
+  "type": "provider-plugin",
+  "schemaVersion": 1,
+  "provider": "model-bridge"
+}

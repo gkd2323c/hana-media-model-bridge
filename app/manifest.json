@@ -1,0 +1,35 @@
+{
+  "manifestVersion": 2,
+  "id": "media-model-bridge",
+  "name": "多媒体模型桥",
+  "version": "0.3.0",
+  "description": "把任意 OpenAI 兼容的图片与视频生成服务接进多媒体设置，模型清单由你自己维护。",
+  "entry": "index.js",
+  "minAppVersion": "0.978.0",
+  "icon": "assets/icon.svg",
+  "capabilities": [
+    "app/media.provide",
+    "app/process.spawn",
+    "app/provider.models.manage",
+    "app/tools.expose-to-model"
+  ],
+  "contributes": {
+    "settings": {
+      "title": "多媒体模型桥",
+      "ui": {
+        "route": "/panel.html"
+      }
+    },
+    "cards": [
+      {
+        "id": "panel",
+        "title": "多媒体模型桥",
+        "description": "配置自定义图片与视频生成供应商及模型。",
+        "route": "/panel.html",
+        "face": {
+          "image": "assets/cover.svg"
+        }
+      }
+    ]
+  }
+}

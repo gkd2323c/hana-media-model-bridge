@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>多媒体模型桥</title>
+  <link rel="stylesheet" href="./assets/panel.css">
+</head>
+<body>
+  <main>
+    <header class="head">
+      <div>
+        <h1>多媒体模型桥</h1>
+        <p class="sub">把任意 OpenAI 兼容的图片与视频生成服务接进多媒体设置。这里维护的模型会出现在「多媒体 → 图片生成 / 视频生成」的供应商「模型桥（自定义）」下面。</p>
+      </div>
+      <div class="head-actions">
+        <button id="add-provider" class="btn">添加供应商</button>
+        <button id="save" class="btn primary">保存</button>
+      </div>
+    </header>
+
+    <p id="status" class="status" role="status">正在读取配置…</p>
+
+    <section id="providers" class="providers"></section>
+
+    <p class="hint">模型 ID 填服务端真实模型名（例如 agnes-image-2.5-flash 或 agnes-video-2.5-flash），类型按名字自动判断（含 video 就是视频，可手动改）。尺寸、宽高比、时长都有默认值：Agnes 图片给 1K，视频给 720P、5 秒、16:9。想控制构图或时长时再改；仅当服务有特殊要求时才展开「高级」。</p>
+  </main>
+  <script>
+    window.addEventListener('error', () => {
+      const el = document.getElementById('status');
+      if (el) el.textContent = '页面脚本出错，请重新加载或检查 App 资源。';
+    }, true);
+  </script>
+  <script type="module" src="./assets/panel.js"></script>
+</body>
+</html>

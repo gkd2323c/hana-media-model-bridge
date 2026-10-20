@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="Multimedia model bridge cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1626"/>
+      <stop offset="1" stop-color="#132a3f"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <g stroke="#22405c" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="135" x2="960" y2="135"/>
+    <line x1="0" y1="270" x2="960" y2="270"/>
+    <line x1="0" y1="405" x2="960" y2="405"/>
+    <line x1="240" y1="0" x2="240" y2="540"/>
+    <line x1="480" y1="0" x2="480" y2="540"/>
+    <line x1="720" y1="0" x2="720" y2="540"/>
+  </g>
+  <path d="M180 372c0-166 134-300 300-300s300 134 300 300" fill="none" stroke="#4fdcb8" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+  <line x1="150" y1="372" x2="810" y2="372" stroke="#3a5f85" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="180" cy="372" r="16" fill="#4fdcb8"/>
+  <circle cx="780" cy="372" r="16" fill="#4fdcb8"/>
+  <circle cx="480" cy="126" r="18" fill="#f2c66d"/>
+  <rect x="150" y="430" width="300" height="8" rx="4" fill="#2b4a6b"/>
+  <rect x="150" y="458" width="180" height="8" rx="4" fill="#1f3950"/>
+</svg>

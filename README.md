@@ -30,7 +30,7 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 
 打开设置里的「多媒体模型桥」：
 
-1. 添加供应商：名称、Base URL（例如 `https://api.agnes-ai.cn/v1`）、API Key。
+1. 添加供应商：名称、Base URL（例如 `https://api.example.com/v1`）、API Key。
 2. 添加模型，只填模型 ID。类型按名字自动判断：带 `video` 的是视频，其余是图片，也可以手动切换。
 3. 保存。图片模型出现在「多媒体 → 图片生成」，视频模型出现在「多媒体 → 视频生成」，供应商都叫「模型桥（自定义）」。
 
@@ -38,19 +38,18 @@ App 清单里的 `contributes.providers` 也被试过：宿主接受注册，但
 
 | 类型 | 默认尺寸 | 默认画幅 | 默认时长 |
 | --- | --- | --- | --- |
-| Agnes 图片 | `1K` | 不指定 | — |
-| Agnes 视频 | `720P` | `16:9` | `5` 秒 |
-| 其它图片 | `1024x1024` | 不指定 | — |
+| 图片 | 按模型名推断，档位式服务给 `1K`，像素式给 `1024x1024` | 不指定 | — |
+| 视频 | `720P` | `16:9` | `5` 秒 |
 
 这些只是默认值：生成时传 `ratio`、`duration` 等参数会覆盖它们，所以同一个模型可以按次决定。服务要求额外字段时，展开「高级：额外参数」，那段 JSON 会原样合并进请求体。
 
 ## 支持范围
 
 - 图片：`POST {BaseURL}/images/generations`，按 `data[].b64_json` 或 `data[].url` 解析。
-- 视频：`POST {BaseURL}/videos` 提交，按 `/agnesapi?video_id={id}&model_name={model}` 轮询，`status=completed` 后从 `url` 下载。查询路径可在高级参数里用 `queryPath` 覆盖，模板支持 `{id}` 与 `{model}`。
+- 视频：`POST {BaseURL}/videos` 提交，再按服务商的查询接口轮询（默认使用档位式模型常见的 `/agnesapi?video_id={id}&model_name={model}` 形式），`status=completed` 后从 `url` 下载。查询路径可在高级参数里用 `queryPath` 覆盖，模板支持 `{id}` 与 `{model}`。
 - 目前视频只做文生视频（`mode: "text"`），首尾帧与图片参考尚未实现。
 
-实测于 Agnes Image 2.5 Flash 与 Agnes Video 2.5 Flash：图片 2624×1472 / 1024×1024 / 1312×736 三档、视频 1280×720 h264。
+实测覆盖图片三种尺寸档与 720P 视频，均能正常出图与出片。
 
 ## 目录结构
 

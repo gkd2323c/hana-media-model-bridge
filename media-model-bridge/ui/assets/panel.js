@@ -60,7 +60,7 @@ function modelRow(provider, model) {
   const row = document.createElement('div');
   row.className = 'model-row';
 
-  const id = textInput(model.id, '模型 ID，如 agnes-image-2.5-flash 或 agnes-video-2.5-flash', (value) => {
+  const id = textInput(model.id, '模型 ID，如 vendor-image-1 或 vendor-video-1', (value) => {
     model.id = value.trim();
     if (!model.type) model.type = guessType(model.id);
     if (!model.size) sizeInput.value = guessSize(model.id, model.type);

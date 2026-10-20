@@ -2,7 +2,7 @@
   "id": "model-bridge",
   "displayName": "模型桥（自定义）",
   "authType": "none",
-  "defaultBaseUrl": "https://api.agnes-ai.cn/v1",
+  "defaultBaseUrl": "https://api.example.com/v1",
   "defaultApi": "openai-completions",
   "models": [],
   "capabilities": {

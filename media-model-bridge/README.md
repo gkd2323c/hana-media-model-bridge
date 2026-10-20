@@ -39,7 +39,7 @@ App 清单里的 `contributes.providers` 不再使用：宿主会接受这种声
 ## 边界
 
 - 图片：服务端需实现 `POST /images/generations`，响应按 `data[].b64_json` 与 `data[].url` 两种形状解析。
-- 视频：目前只走文生视频（`mode: "text"`），服务端需实现 `POST /videos` 与一个可查询任务状态的接口；默认按 `/agnesapi?video_id={id}&model_name={model}` 轮询，其它形式可在高级参数里用 `queryPath` 覆盖。
+- 视频：目前只走文生视频（`mode: "text"`），服务端需实现 `POST /videos` 与一个可查询任务状态的接口；默认按 OpenAI 风格的 `/videos/{id}` 轮询，`agnes-` 开头的模型沿用 `/agnesapi?video_id={id}&model_name={model}`，其它形式可在高级参数里用 `queryPath` 覆盖。
 - 视频的 `size` 在部分服务上固定为 `720P`，`seconds` 取 `4`–`12`；超出范围的请求会被服务端拒绝。
 - 产出写到 App 自己的 `generated` 目录，由宿主登记进会话。
 - 配置保存在 App 数据目录的 `config.json`，API Key 明文存放，仅本机 App 与宿主可读。
